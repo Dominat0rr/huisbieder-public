@@ -1,0 +1,30 @@
+<nav class="navbar navbar-expand-md" th:fragment="menu" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+    <div class="container-inline">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/}">Home</a>
+            </li>
+            <li class="nav-item" sec:authorize="hasAuthority('notaris')">
+                <a class="nav-link" th:href="@{/toevoegen}">Toevoegen</a>
+            </li>
+        </ul>
+    </div>
+
+
+    <div class="navbar-nav ml-auto" sec:authorize="isAuthenticated()">
+        <form method="post" th:action="@{/logout}">
+            <input class="btn btn-danger" type="submit" value="Afmelden">
+        </form>
+    </div>
+    <div class="navbar-nav ml-auto" sec:authorize="isAnonymous()">
+        <a class="nav-link" th:href="@{/login}">Aanmelden</a>
+    </div>
+</nav>
+
+<head th:fragment="head(title)" xmlns:th="http://www.thymeleaf.org">
+    <title th:text="${title}"></title>
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>

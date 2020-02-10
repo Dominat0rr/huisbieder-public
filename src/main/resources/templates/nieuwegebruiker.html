@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="nl" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments::head(title='Huisbieder')"></head>
+
+<body>
+    <nav th:replace="fragments::menu"></nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 m-auto">
+                <h1 class="mt-3">Nieuwe gebruiker:</h1>
+                <form class="form-group" th:action='@{/nieuwegebruiker/registratie}' method='post' th:object="${gebruikerRegistratieForm}" th:class="registratie">
+                    <div class="form-row">
+                        <!-- Voornaam -->
+                        <div class="form-group col-md-6">
+                            <label><b>Voornaam:</b></label>
+                            <span th:errors="*{voornaam}"></span>
+                            <input th:field="*{voornaam}" type="text" class="form-control" name="voornaam" placeholder="Voornaam" required autofocus>
+                        </div>
+                        <!-- Familienaam -->
+                        <div class="form-group col-md-6">
+                            <label><b>Familienaam:</b></label>
+                            <span th:errors="*{familienaam}"></span>
+                            <input th:field="*{familienaam}" type="text" class="form-control" name="familienaam" placeholder="Familienaam" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <!-- Straatnaam -->
+                        <div class="form-group col-md-6">
+                            <label><b>Straat:</b></label>
+                            <span th:errors="*{straatnaam}"></span>
+                            <input th:field="*{straatnaam}" type="text" class="form-control" name="straatnaam" placeholder="Straatnaam" required>
+                        </div>
+                        <!-- Huisnummer -->
+                        <div class="form-group col-md-6">
+                            <label><b>Huisnummer:</b></label>
+                            <span th:errors="*{huisnummer}"></span>
+                            <input th:field="*{huisnummer}" type="text" class="form-control" name="huisnummer" placeholder="Huisnummer" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <!-- Gemeente -->
+                        <div class="form-group col-md-6">
+                            <label><b>Gemeente:</b></label>
+                            <span th:errors="*{gemeente}"></span>
+                            <input th:field="*{gemeente}" type="text" class="form-control" name="gemeente" placeholder="Gemeente" required>
+                        </div>
+                        <!-- Postcode -->
+                        <div class="form-group col-md-6">
+                            <label><b>Postcode:</b></label>
+                            <span th:errors="*{postcode}"></span>
+                            <input th:field="*{postcode}" type="text" class="form-control" name="postcode" placeholder="Postcode" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <!-- Telefoonnummer -->
+                        <div class="form-group col-md-6">
+                            <label><b>Telefoon:</b></label>
+                            <span th:errors="*{telefoonnummer}"></span>
+                            <input th:field="*{telefoonnummer}" type="text" class="form-control" name="telefoonnummer" placeholder="Telefoonnummer" required>
+                        </div>
+                        <!-- Email -->
+                        <div class="form-group col-md-6">
+                            <label><b>Email:</b></label>
+                            <span th:errors="*{email}"></span>
+                            <input th:field="*{email}" type="email" class="form-control" name="email" placeholder="Email adres" required>
+                        </div>
+                    </div>
+
+                    <!-- gebruikersnaam -->
+                    <dt class="input-label">
+                        <label name="gebruikersnaam" autocapitalize="off" autofocus="autofocus" required="required" for="user_gebruikersnaam">Gebruikersnaam:</label>
+                    </dt>
+                    <dd>
+                        <span th:errors="*{gebruikersnaam}"></span>
+                        <span th:if="${foutboodschap} != null" th:text="${foutboodschap}"></span>
+                        <input th:field="*{gebruikersnaam}" name="gebruikersnaam" autocapitalize="off" autofocus="autofocus" required="required" class="form-control input py-1" type="text" id="user_gebruikersnaam" autocomplete="off" spellcheck="false" placeholder="Gebruikersnaam">
+                    </dd>
+                    <!-- wachtwoord -->
+                    <dt class="input-label">
+                        <label name="familienaam" autocapitalize="off" autofocus="autofocus" required="required" for="user_paswoord">Wachtwoord:</label>
+                    </dt>
+                    <dd>
+                        <span th:errors="*{paswoord}"></span>
+                        <input th:field="*{paswoord}" name="paswoord" autocapitalize="off" autofocus="autofocus" required="required" class="form-control input py-1" type="text" id="user_paswoord" autocomplete="off" spellcheck="false" placeholder="Wachtwoord">
+                    </dd>
+                    <!-- wachtwoord (herhaal) -->
+                    <dt class="input-label">
+                        <label name="herhaalPaswoord" autocapitalize="off" autofocus="autofocus" required="required" for="user_herhaalPaswoord">Wachtwoord:</label>
+                    </dt>
+                    <dd>
+                        <span th:errors="*{herhaalPaswoord}"></span>
+                        <span th:if="${foutboodschap} != null" th:text="${foutboodschap}"></span>
+                        <input th:field="*{herhaalPaswoord}" name="herhaalPaswoord" autocapitalize="off" autofocus="autofocus" required="required" class="form-control input py-1" type="text" id="user_herhaalPaswoord" autocomplete="off" spellcheck="false" placeholder="Wachtwoord">
+                    </dd>
+
+                    <input class="btn btn-secondary" type='submit' value='Maak nieuw account aan'>
+                </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

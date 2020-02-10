@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="nl" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments::head(title='Huisbieder')"></head>
+
+    <body>
+        <nav th:replace="fragments::menu"></nav>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 m-auto" id="panden">
+                    <h1 class="mt-3">Huisbieder</h1>
+
+                    <form class="form-search" method="post" th:action="@{/gemeenten}" th:object="${gemeenteForm}">
+                        <span th:errors="*{zoekTerm}"></span>
+                        <input class="form-search-input" type="text" th:field="*{zoekTerm}" placeholder="Zoeken..." name="search" required>
+                        <button type="submit"><i class="fa fa-search"></i></button>
+                    </form>
+
+                    <table class="table table-dark text-center mt-3" id="sort-table">
+                        <thead>
+                        <tr>
+                            <th><a th:href="@{/?sort=startbod}">Prijs</a></th>
+                            <th><a th:href="@{/?sort=datumToegevoegd}">Toegevoegd</a></th>
+                            <th><a th:href="@{/?sort=startdatum}">Startdatum</a></th>
+                            <th><a th:href="@{/?sort=einddatum}">Einddatum</a></th>
+                        </tr>
+                        </thead>
+                    </table>
+                    <br>
+
+                    <div th:each="pand:${page.content}" th:object="${pand}">
+                        <div class="card card-body mb-12 mb-3" th:id="${'row' + pand.id}">
+                            <div class="row mb-2">
+                                <div class="col-md-7">
+                                    <img class="image" th:src="@{/images/{id}_1.jpg(id=${pand.id})}" alt="Afbeelding"/>
+                                </div>
+                                <div class="col-md-5">
+                                    <p th:text="${pand.postcode + ' ' + pand.gemeenteNaam + ' - ' + pand.straatnaam + ' ' + pand.huisnummer}"/>
+                                    <p th:if="${pand.datumMoetNogKomen}" th:text="${'Start datum: ' + pand.startdatum}"/>
+                                    <p th:if="${not pand.datumMoetNogKomen and not pand.datumIsVoorbij}" th:text="${'Eind datum: ' + pand.einddatum}"/>
+                                    <p th:if="${pand.datumIsVoorbij}" th:text="'Biedingen zijn afgelopen'"/>
+                                    <p th:if="${pand.startbod == pand.huidigbod and not pand.datumIsVoorbij and not pand.datumMoetNogKomen}" th:text="${'Start bod: €' + pand.startbod}"/>
+                                    <p th:if="${pand.startbod != pand.huidigbod and not pand.datumIsVoorbij and not pand.datumMoetNogKomen}" th:text="${'Huidig bod: €' + pand.huidigbod}"/>
+                                    <a class="btn btn-info" th:href="@{/panden/{id}(id=*{id})}">Meer details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="text-center">
+                     <span th:each="pageNr:${#numbers.sequence(1,page.totalPages)}">
+                     <span th:if="${pageNr} -1 == ${page.number}" th:text="${pageNr}"></span>
+                     <a class="btn btn-info" th:if="${pageNr} -1 != ${page.number}" th:text="${pageNr}" th:href="@{/(page=${pageNr-1},sort=${param.sort})}"></a>
+                    </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

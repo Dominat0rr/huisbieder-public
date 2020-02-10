@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="nl" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+    <head th:replace="fragments::head(title='Huisbieder')"></head>
+
+    <body>
+        <nav th:replace="fragments::menu"></nav>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 m-auto" id="login">
+                    <div class="container-login" sec:authorize="isAnonymous()">
+                        <h1 class="text-center mt-3">Aanmelden:</h1>
+                        <div th:if="${param.error} != null" class="fout">Verkeerde gebruikersnaam of paswoord</div>
+                        <br>
+                        <div sec:authorize="isAnonymous()">
+                            <form th:action="@{/login}" method="post">
+                                <input class="form-control d-flex btn-block" name="username" placeholder="Gebruikersnaam" required autofocus>
+                                <input class="form-control d-flex btn-block" name="password" type="password" placeholder="Wachtwoord" required>
+                                <input class="btn btn-info btn-block mt-2" type="submit" value="Aanmelden">
+                            </form>
+                        </form>
+                        <p class="text-center mt-2">Nog geen account?</p>
+                        <form th:action="@{/nieuwegebruiker}">
+                            <input class="btn btn-info btn-block" type='submit' value='Registreren'>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

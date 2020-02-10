@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="nl" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments::head(title='Huisbieder')"></head>
+
+<body>
+    <nav th:replace="fragments::menu"></nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 m-auto">
+                <h1 class="mt-3">Nieuw pand toevoegen:</h1>
+
+                <form class="form-group" th:action='@{/toevoegen/voegtoe}' method='post' th:object="${pandToevoegenForm}" th:class="registratie">
+                    <div class="form-row mt-3">
+                    <label><b>Type woning:</b></label>
+                        <select class="form-control ml-2" style="width: 280px" id="Mobility" th:field="*{typeWoning}" th:name="typeWoning">
+                            <option th:value="0">Appartement</option>
+                            <option th:value="1">Commercieel</option>
+                            <option th:value="2">Garage</option>
+                            <option th:value="3">Huis</option>
+                            <option th:value="4">Industrie</option>
+                            <option th:value="5">Kantoor</option>
+                            <option th:value="6">Grond</option>
+                            <option th:value="7">Andere</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <!-- Naam -->
+                        <div class="form-group col-md-6">
+                            <label><b>Naam:</b></label>
+                            <span th:errors="*{naam}"></span>
+                            <input th:field="*{naam}" type="text" name="naam" class="form-control" required autofocus>
+                        </div>
+                        <!-- Familienaam -->
+                        <div class="form-group col-md-6">
+                            <label><b>Titel:</b></label>
+                            <span th:errors="*{titel}"></span>
+                            <input th:field="*{titel}" type="text" name="titel" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <!-- Straatnaam -->
+                        <div class="form-group col-md-6">
+                            <label><b>Straatnaam:</b></label>
+                            <span th:errors="*{straatnaam}"></span>
+                            <input th:field="*{straatnaam}" type="text" name="straatnaam" class="form-control" required>
+                        </div>
+                        <!-- Huisnummer -->
+                        <div class="form-group col-md-6">
+                            <label><b>Huisnummer:</b></label>
+                            <span th:errors="*{huisnummer}"></span>
+                            <input th:field="*{huisnummer}" type="text" name="huisnummer" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <!-- Postcode -->
+                        <div class="form-group col-md-6">
+                            <label><b>Postcode:</b></label>
+                            <span th:errors="*{postcode}"></span>
+                            <input th:field="*{postcode}" type="text" name="postcode" class="form-control" required>
+                        </div>
+                        <!-- Gemeente -->
+                        <div class="form-group col-md-6">
+                            <label><b>Gemeente:</b></label>
+                            <span th:errors="*{gemeente}"></span>
+                            <input th:field="*{gemeente}" type="text" name="gemeente" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <!-- Bouwjaar -->
+                        <div class="form-group col-md-4">
+                            <label><b>Bouwjaar:</b></label>
+                            <span th:errors="*{bouwjaar}"></span>
+                            <input th:field="*{bouwjaar}" type="text" name="bouwjaar" class="form-control">
+                        </div>
+                        <!-- Oppervlakte -->
+                        <div class="form-group col-md-4">
+                            <label><b>Oppervlakte:</b></label>
+                            <span th:errors="*{oppervlakte}"></span>
+                            <input th:field="*{oppervlakte}" type="text" name="oppervlakte" class="form-control">
+                        </div>
+                        <!-- Staat van het gebouw -->
+                        <div class="form-group col-md-4">
+                            <label><b>Staat van het gebouw:</b></label>
+                            <span th:errors="*{staatgebouw}"></span>
+                            <input th:field="*{staatgebouw}" type="text" name="staatgebouw" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <!-- Aantal gevels -->
+                        <div class="form-group col-md-4">
+                            <label><b>Aantal gevels:</b></label>
+                            <span th:errors="*{aantalgevels}"></span>
+                            <input th:field="*{aantalgevels}" type="text" name="aantalgevels" class="form-control">
+                        </div>
+                        <!-- Aantal slaapkamers -->
+                        <div class="form-group col-md-4">
+                            <label><b>Aantal slaapkamers:</b></label>
+                            <span th:errors="*{aantalslaapkamers}"></span>
+                            <input th:field="*{aantalslaapkamers}" type="text" name="aantalslaapkamers" class="form-control">
+                        </div>
+                        <!-- Aantal badkamers -->
+                        <div class="form-group col-md-4">
+                            <label><b>Aantal badkamers:</b></label>
+                            <span th:errors="*{aantalbadkamers}"></span>
+                            <input th:field="*{aantalbadkamers}" type="text" name="aantalbadkamers" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <!-- Aantal toiletten -->
+                        <div class="form-group col-md-6">
+                            <label><b>Aantal toiletten:</b></label>
+                            <span th:errors="*{aantaltoiletten}"></span>
+                            <input th:field="*{aantaltoiletten}" type="text" name="aantaltoiletten" class="form-control">
+                        </div>
+                        <!-- Aantal verdiepingen -->
+                        <div class="form-group col-md-6">
+                            <label><b>Aantal verdiepingen:</b></label>
+                            <span th:errors="*{aantalverdiepingen}"></span>
+                            <input th:field="*{aantalverdiepingen}" type="text" name="aantalverdiepingen" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <!-- EPC Code -->
+                        <div class="form-group col-md-6">
+                            <label><b>EPC Code:</b></label>
+                            <span th:errors="*{code_epc}"></span>
+                            <input th:field="*{code_epc}" type="text" name="code_epc" class="form-control">
+                        </div>
+                        <!-- Kadastraal inkomen -->
+                        <div class="form-group col-md-6">
+                            <label><b>Kadastraal inkomen:</b></label>
+                            <span th:errors="*{kadastraalinkomen}"></span>
+                            <input th:field="*{kadastraalinkomen}" type="text" name="kadastraalinkomen" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <!-- Vrij vanaf -->
+                        <div class="form-group col-md-6">
+                            <label><b>Vrij vanaf:</b></label>
+                            <span th:errors="*{vrijVanaf}"></span>
+                            <input th:field="*{vrijVanaf}" type="text" name="vrijVanaf" class="form-control">
+                        </div>
+                        <!-- Start bod -->
+                        <div class="form-group col-md-6">
+                            <label><b>Start bod:</b></label>
+                            <span th:errors="*{startbod}"></span>
+                            <input th:field="*{startbod}" type="text" name="startbod" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <!-- Start datum -->
+                        <div class="form-group col-md-6">
+                            <label><b>Start datum (dd-mm-yyyy hh:mm):</b></label>
+                            <span th:errors="*{startdatum}"></span>
+                            <input th:field="*{startdatum}" type="text" name="startdatum" class="form-control" required>
+                        </div>
+                        <!-- Eind datum -->
+                        <div class="form-group col-md-6">
+                            <label><b>Eind datum (dd-mm-yyyy hh:mm):</b></label>
+                            <span th:errors="*{einddatum}"></span>
+                            <input th:field="*{einddatum}" type="text" name="einddatum" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <div class="radio">
+                                <label>
+                                    <p><b>Living:</b></p>
+                                    <span th:errors="*{living}"></span>
+                                    <input type="radio" name="living" th:value="1">Aanwezig<br>
+                                    <input type="radio" name="living" th:value="0">Niet aanwezig<br>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <div class="radio">
+                                <label>
+                                    <p><b>Eetkamer:</b></p>
+                                    <span th:errors="*{eetkamer}"></span>
+                                    <input type="radio" name="eetkamer" th:value="1">Aanwezig<br>
+                                    <input type="radio" name="eetkamer" th:value="0">Niet aanwezig<br>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <div class="radio">
+                                <label>
+                                    <p><b>Bureau:</b></p>
+                                    <span th:errors="*{bureau}"></span>
+                                    <input type="radio" name="bureau" th:value="1">Aanwezig<br>
+                                    <input type="radio" name="bureau" th:value="0">Niet aanwezig<br>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <div class="radio">
+                                <label>
+                                    <p><b>Kelder:</b></p>
+                                    <span th:errors="*{kelder}"></span>
+                                    <input type="radio" name="kelder" th:value="1">Aanwezig<br>
+                                    <input type="radio" name="kelder" th:value="0">Niet aanwezig<br>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <div class="radio">
+                                <label>
+                                    <p><b>Zolder:</b></p>
+                                    <span th:errors="*{zolder}"></span>
+                                    <input type="radio" name="zolder" th:value="1">Aanwezig<br>
+                                    <input type="radio" name="zolder" th:value="0">Niet aanwezig<br>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <div class="radio">
+                                <label>
+                                    <p><b>Garage:</b></p>
+                                    <span th:errors="*{garage}"></span>
+                                    <input type="radio" name="garage" th:value="1">Aanwezig<br>
+                                    <input type="radio" name="garage" th:value="0">Niet aanwezig<br>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <div class="radio">
+                                <label>
+                                    <p><b>Tuin:</b></p>
+                                    <span th:errors="*{tuin}"></span>
+                                    <input type="radio" name="tuin" th:value="1">Aanwezig<br>
+                                    <input type="radio" name="tuin" th:value="0">Niet aanwezig<br>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <div class="radio">
+                                <label>
+                                    <p><b>Terras:</b></p>
+                                    <span th:errors="*{terras}"></span>
+                                    <input type="radio" name="terras" th:value="1">Aanwezig<br>
+                                    <input type="radio" name="terras" th:value="0">Niet aanwezig<br>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <div class="radio">
+                                <label>
+                                    <p><b>Veranda:</b></p>
+                                    <span th:errors="*{veranda}"></span>
+                                    <input type="radio" name="veranda" th:value="1">Aanwezig<br>
+                                    <input type="radio" name="veranda" th:value="0">Niet aanwezig<br>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <div class="radio">
+                                <label>
+                                    <p><b>Dubbele begelazing:</b></p>
+                                    <span th:errors="*{dubbelebegelazing}"></span>
+                                    <input type="radio" name="dubbelebegelazing" th:value="1">Aanwezig<br>
+                                    <input type="radio" name="dubbelebegelazing" th:value="0">Niet aanwezig<br>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <label><b>Omschrijving:</b></label>
+                        <br>
+                        <div class="form-group col-md-12">
+                            <span th:errors="*{omschrijving}"></span>
+                            <textarea rows="10" cols="50" th:field="*{omschrijving}"/>
+                        </div>
+                    </div>
+                    <input class="btn btn-secondary mt-2" type='submit' value='Maak nieuw pand aan'>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

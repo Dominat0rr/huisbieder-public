@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="nl" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments::head(title =${pand} == null ? 'Pand niet gevonden' : 'Huisbieder')"></head>
+
+    <script th:src="@{/js/readMoreFunction.js}"></script>
+    <script th:src="@{/js/imageGalleryFunction.js}"></script>
+
+    <body>
+        <nav th:replace="fragments::menu"></nav>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 m-auto">
+                    <h1 class="mt-3" th:if="${pand} == null">Pand niet gevonden: <span th:text="${id}"></span></h1>
+                    <h1 class="mt-3" th:text="${pand.titel}"></h1>
+                    <div th:if="${pand} != null" th:object="${pand}">
+
+                        <div class="row">
+                            <div class="col-2">
+                                <p th:text="${'Code: ' + pand.id}"/>
+                            </div>
+                            <div class="col-2">
+                                <p th:text="${'Type: ' + #strings.toLowerCase(pand.typeWoning)}"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <!-- The expanding image container -->
+                                <div class="container_pand_detail">
+                                    <!-- Expanded image -->
+                                    <img id="expandedImg">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <p th:text="${pand.naam}"/>
+                                <p th:text="${pand.postcode + ' ' + pand.gemeenteNaam + ' - ' + pand.straatnaam + ' ' + pand.huisnummer}"/>
+                                <p th:text="${'Start datum: ' + pand.startdatum}"/>
+                                <p th:text="${'Eind datum: ' + pand.einddatum}"/>
+                                <p th:if="${pand.startbod == pand.huidigbod}" th:text="${'Start bod: €' + pand.startbod}"/>
+                                <p th:if="${pand.startbod != pand.huidigbod}" th:text="${'Huidig bod: €' + pand.huidigbod}"/>
+                                <br>
+
+                                <div th:if="${not pand.datumIsVoorbij}">
+                                    <form th:object="${bodForm}" th:action="@{/panden/{id}/bieden(id=${pand.id})}" method="post">
+                                            <label>Bod plaatsen:
+                                                <span class="fout" th:if="${foutboodschap} != null" th:text="${foutboodschap}"></span>
+                                                <input class="form-control" th:field="*{bod}" type='number' autofocus required min="1" max="999999999">
+                                            </label>
+                                            <input class="btn btn-info" type="submit" value="Plaats bod">
+                                    </form>
+                                    <script th:src="@{/js/preventDoubleSubmit.js}"></script>
+                                </div>
+                                <div th:if="${pand.datumIsVoorbij}">
+                                    <p>Biedingen voor dit pand zijn afgesloten.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pand_fotos">
+                            <!-- The grid: four columns -->
+                            <div class="row foto-row">
+                                <div class="col-3">
+                                    <img th:src="@{/images/{id}_1.jpg(id=${pand.id})}" onload="imageGalleryFunction(this);" onclick="imageGalleryFunction(this);">
+                                </div>
+                                <div class="col-3">
+                                    <img th:src="@{/images/{id}_2.jpg(id=${pand.id})}" onclick="imageGalleryFunction(this);">
+                                </div>
+                                <div class="col-3">
+                                    <img th:src="@{/images/{id}_3.jpg(id=${pand.id})}" onclick="imageGalleryFunction(this);">
+                                </div>
+                                <div class="col-3">
+                                    <img th:src="@{/images/{id}_4.jpg(id=${pand.id})}" onclick="imageGalleryFunction(this);">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mt-3">
+                            <h2>Omschrijving: </h2>
+                            <p id="omschrijvingPreview" style="display:inline;" th:if="${not pand.getOmschrijvingPreviewEqualsOmschrijving()}" th:text="${pand.omschrijvingPreview}"/>
+                            <p id="omschrijving" style="display:none;" th:text="${pand.omschrijving}"/>
+                            <a onclick="readMoreFunction()" id="btn-meer-details">Meer details</a>
+                        </div>
+
+                        <div class="col-md-6 mt-3">
+                            <h2>Kenmerken van het goed: </h2>
+                            <p th:if="${pand.bouwjaar != null}" th:text="${'Bouwjaar: ' + pand.bouwjaar}"/>
+                            <p th:if="${pand.oppervlakte != null}" th:text="${'Oppervlakte grond: ' + pand.oppervlakte}"/>
+                            <p th:if="${pand.staatGebouw != null}" th:text="${'Staat van het gebouw: ' + pand.staatGebouw}"/>
+                            <p th:if="${pand.aantalgevels != null}" th:text="${'Aantal gevels: ' + pand.aantalgevels}"/>
+                            <p th:if="${pand.aantalverdiepingen != null}" th:text="${'Aantal verdiepingen: ' + pand.aantalverdiepingen}"/>
+                            <p th:if="${pand.aantalslaapkamers != null}" th:text="${'Aantal slaapkamers: ' + pand.aantalslaapkamers}"/>
+                            <p th:if="${pand.aantalbadkamers != null}" th:text="${'Aantal badkamers: ' + pand.aantalbadkamers}"/>
+                            <p th:if="${pand.aantaltoiletten != null}" th:text="${'Aantal toiletten: ' + pand.aantaltoiletten}"/>
+                            <div th:if="${pand.living != null}">
+                                <p th:if="${pand.living}" th:text="'Living: ✔'"/>
+                                <p th:if="${not pand.living}" th:text="'Living: 🗙'"/>
+                            </div>
+                            <div th:if="${pand.eetkamer != null}">
+                                <p th:if="${pand.eetkamer}" th:text="'Eetkamer: ✔'"/>
+                                <p th:if="${not pand.eetkamer}" th:text="'Eetkamer: 🗙'"/>
+                             </div>
+                            <div th:if="${pand.bureau != null}">
+                                <p th:if="${pand.bureau}" th:text="'Bureau: ✔'"/>
+                                <p th:if="${not pand.bureau}" th:text="'Bureau: 🗙'"/>
+                            </div>
+                            <div th:if="${pand.kelder != null}">
+                                <p th:if="${pand.kelder}" th:text="'Kelder: ✔'"/>
+                                <p th:if="${not pand.kelder}" th:text="'Kelder: 🗙'"/>
+                            </div>
+                            <div th:if="${pand.zolder != null}">
+                                <p th:if="${pand.zolder}" th:text="'Zolder: ✔'"/>
+                                <p th:if="${not pand.zolder}" th:text="'Zolder: 🗙'"/>
+                            </div>
+                            <div th:if="${pand.garage != null}">
+                                <p th:if="${pand.garage}" th:text="'Garage: ✔'"/>
+                                <p th:if="${not pand.garage}" th:text="'Garage: 🗙'"/>
+                            </div>
+                            <div th:if="${pand.tuin != null}">
+                                <p th:if="${pand.tuin}" th:text="'Tuin: ✔'"/>
+                                <p th:if="${not pand.tuin}" th:text="'Tuin: 🗙'"/>
+                            </div>
+                            <div th:if="${pand.terras != null}">
+                                <p th:if="${pand.terras}" th:text="'Terras: ✔'"/>
+                                <p th:if="${not pand.terras}" th:text="'Terras: 🗙'"/>
+                            </div>
+                            <div th:if="${pand.veranda != null}">
+                                <p th:if="${pand.veranda}" th:text="'Veranda: ✔'"/>
+                                <p th:if="${not pand.veranda}" th:text="'Veranda: 🗙'"/>
+                            </div>
+                            <br>
+                            <h2 th:if="${pand.code_epc != null or pand.dubbelebegelazing != null}" th:text="'Energiegegevens: '"/>
+                            <p th:if="${pand.code_epc != null and not pand.code_epc.empty}" th:text="${'Unieke code van het EPC-certificaat: ' + pand.code_epc}"/>
+                            <div th:if="${pand.dubbelebegelazing != null}">
+                                <p th:if="${pand.dubbelebegelazing}" th:text="'Dubbelebegelazing: ✔'"/>
+                                <p th:if="${not pand.dubbelebegelazing}" th:text="'Dubbelebegelazing: 🗙'"/>
+                            </div>
+                            <br>
+                            <h2 th:if="${pand.kadastraalinkomen != null or pand.vrijVanaf != null}" th:text="'Financiële aspecten: '"/>
+                            <p th:if="${pand.kadastraalinkomen != null}" th:text="${'Kadastraalinkomen: €' + pand.kadastraalinkomen}"/>
+                            <p th:if="${pand.vrijVanaf != null and not pand.vrijVanaf.empty}" th:text="${'Vrij vanaf: ' + pand.vrijVanaf}"/>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

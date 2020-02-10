@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="nl" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments::head(title='Huisbieder')"></head>
+
+    <body>
+        <nav th:replace="fragments::menu"></nav>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 m-auto" id="panden">
+                    <h1 class="mt-3" th:text="${'Panden uit: ' + gemeente.naam}"/>
+                    <div class="panel-body">
+                        <h2 th:if="${#lists.isEmpty(panden)}" th:text="'Geen resultaten gevonden...'"/>
+                        <div class="container mt-3" th:if="${not #lists.isEmpty(panden)}" th:each="pand:${panden}" th:object="${pand}">
+                            <div class="card card-body mb-12 mb-3" th:id="${'row' + pand.id}">
+                                <div class="row mb-2">
+                                    <div class="col-md-7">
+                                        <img class="image" th:src="@{/images/{id}_1.jpg(id=${pand.id})}" alt="Afbeelding"/>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <p th:text="${pand.postcode + ' ' + pand.gemeenteNaam + ' - ' + pand.straatnaam + ' ' + pand.huisnummer}"/>
+                                        <p th:if="${pand.datumMoetNogKomen}" th:text="${'Start datum: ' + pand.startdatum}"/>
+                                        <p th:if="${not pand.datumMoetNogKomen and not pand.datumIsVoorbij}" th:text="${'Eind datum: ' + pand.einddatum}"/>
+                                        <p th:if="${pand.datumIsVoorbij}" th:text="'Biedingen zijn afgelopen'"/>
+                                        <p th:if="${pand.startbod == pand.huidigbod and not pand.datumIsVoorbij and not pand.datumMoetNogKomen}" th:text="${'Start bod: €' + pand.startbod}"/>
+                                        <p th:if="${pand.startbod != pand.huidigbod and not pand.datumIsVoorbij and not pand.datumMoetNogKomen}" th:text="${'Huidig bod: €' + pand.huidigbod}"/>
+                                        <a class="btn btn-info" th:href="@{/panden/{id}(id=*{id})}">Meer details</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
